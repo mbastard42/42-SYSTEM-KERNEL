@@ -7,7 +7,7 @@ ODIR	:=	.obj/
 COMP	:=	.o
 
 CC		:=	nasm
-CFLG	:=	-f elf64
+CFLG	:=	-felf64
 LK		:=	ar
 LFLG	:=	rcs
 
@@ -16,7 +16,7 @@ OBJS	:=	$(subst $(SDIR),$(ODIR), ${SRCS:$(FILE)=$(COMP)})
 
 $(ODIR)%$(COMP) : $(SDIR)%$(FILE)
 	@mkdir -p $(subst $(SDIR),$(ODIR), $(shell dirname $<)/)
-	$(CC) $(CFLG) $< -o ${addprefix $(ODIR), ${<:$(SDIR)%$(FILE)=%$(COMP)}}
+	$(CC) $(CFLG) $< -o $@
 
 ${NAME} : $(OBJS)
 	@mkdir -p $(BDIR)
@@ -38,6 +38,6 @@ docker :
 	docker build -t libasm . && docker run -it -v ./:/data libasm
 
 test : build
-	gcc test/main.c -L$(BDIR) -l$(subst $(BDIR)lib,,$(subst .a,,$(NAME))) -o $(BDIR)test.out
+	gcc -no-pie test/main.c -L$(BDIR) -l$(subst $(BDIR)lib,,$(subst .a,,$(NAME))) -o $(BDIR)test.out
 
 .PHONY : build clean fclean re all docker test

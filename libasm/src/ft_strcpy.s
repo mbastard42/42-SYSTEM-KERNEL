@@ -1,19 +1,25 @@
 section .text
+
     global ft_strcpy
 
 ft_strcpy:
-    mov rbx, rdi    ; cpy dst to holder
+
+    ; rdi = dst | rsi = src
+
+    mov rbx, rdi    ; hold = dst
 
     copy:
-        cmp byte [rsi], 0   ; comp byte pointed by src with 0
-        je end              ; if last cmp is true, jump to return_count
-        mov al, byte [rsi]  ; cpy src pointed byte into tmp
-        mov byte [rdi], al  ; cpy tmp into dst pointed byte
+
+        cmp byte [rsi], 0   ; *src == 0
+        je end              ; if cmp = true => jump to end
+        mov al, byte [rsi]  ; tmp = *src
+        mov byte [rdi], al  ; *dst = tmp
         inc rdi             ; dst++
         inc rsi             ; src++
-        jmp copy            ; restart loop
+        jmp copy            ; loop
 
     end:
-        mov byte [rdi], 0   ; secure ending NULL char
-        mov rax, rbx        ; cpy holder to return registery
+
+        mov byte [rdi], 0   ; *dst = 0
+        mov rax, rbx        ; return = hold
         ret

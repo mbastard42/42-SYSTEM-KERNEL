@@ -1,16 +1,22 @@
 section .text
+
     global ft_strlen
 
 ft_strlen:
-    xor rcx, rcx    ; counter = 0
+    
+    ; rdi = str
+
+    xor rcx, rcx    ; count = 0
 
     count:
-        cmp byte [rdi], 0   ; comp byte pointed by rbx with 0
-        je end              ; if last cmp is true, jump to return_count
-        inc rdi             ; rbx++, moving to next byte
-        inc rcx             ; rcx++, incrementing counter
-        jmp count           ; restart loop
+
+        cmp byte [rdi], 0   ; *str = 0
+        je end              ; if cmp = true => jump to end
+        inc rdi             ; str++
+        inc rcx             ; count++
+        jmp count           ; loop
 
     end:
-        mov rax, rcx        ; cpy counter to rax (return registery)
-        ret                 ; return rax
+
+        mov rax, rcx        ; return = count
+        ret
